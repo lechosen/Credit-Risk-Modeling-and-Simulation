@@ -1,27 +1,19 @@
 # Credit-Risk-Modeling-and-Simulation
-1. Introduction
-The code was to model credit-risky portfolios of corporate bonds under three different scenarios – Monte Carlo Approximation 1 (5000 In-sample Scenarios, 1000 systemic scenarios and 5 idiosyncratic scenarios for each systemic); Monte Carlo Approximation 2 (5000 In-sample Scenarios, 5000 systemic scenarios
-and 1 idiosyncratic scenario for each systemic); True Distribution (100000 Out-of-sample Scenarios, 100000 systemic scenarios and 1 idiosyncratic scenario for each systemic); 
 
-1.1 Study Data Introduction and Structural Model
-The given instrument dataset contained the following values:
-• Counterparty ID: total 100 counterparties (i.e., 100 corporate bonds in this study)
-• Credit Risk Driver: each counterparty corresponds to different credit drivers (total 50 credit drivers)
-• Credit State: Default; CCC; B; BB; BBB; A; AA; AAA (total 8 credit states)
-• Probability: Chances of transitioning to each credit one year from now from current credit state
-• Loss: The value-loss (positive numbers) result from the credit state transition. In case of default, the recovery rate has been taken into consideration
+The code was to model credit-risky portfolios 1-year loss of corporate bonds under three different scenarios
+– Monte Carlo Approximation 1 (5000 In-sample Scenarios, 1000 systemic scenarios and 5 idiosyncratic scenarios for each systemic, non-Normal distribution of losses); 
+- Monte Carlo Approximation 2 (5000 In-sample Scenarios, 5000 systemic scenarios and 1 idiosyncratic scenario for each systemic, non-Normal distribution of losses);  
+- rue Distribution (100000 Out-of-sample Scenarios, 100000 systemic scenarios and 1 idiosyncratic scenario for each systemic, non-Normal distribution of losses); 
 
-2 Method
-2.1 Structural Model
-The core part is to use structural model to calculate/simulate the random variable - creditworthiness, which is an index that infers a counterparty’s future credit state. The creditworthiness index (𝑤𝑗) involves two components: systemic risk credit drivers (𝑦𝑗) and specific risk idiosyncratic factor (𝑧𝑗). 𝑧𝑗 and 𝑦𝑗 are random variables to be generated to get the 𝑤𝑗. 𝑤𝑗 follows the below mathematical expression: 
-𝑤𝑗=𝛽𝑗𝑦𝑗(𝑘)+𝜎𝑗𝑧𝑗 𝑤ℎ𝑒𝑟𝑒 𝑗 𝑖𝑠 𝑡ℎ𝑒 𝑐𝑜𝑢𝑡𝑒𝑟𝑝𝑎𝑟𝑡𝑦,𝑘 𝑖𝑠 𝑡ℎ𝑒 𝑐𝑟𝑒𝑑𝑖𝑡 𝑐𝑟𝑒𝑑𝑖𝑡 𝑑𝑟𝑖𝑣𝑒𝑟 𝑐𝑜𝑟𝑟𝑒𝑠𝑝𝑜𝑛𝑑𝑖𝑛𝑔 𝑡ℎ𝑒 𝑒𝑎𝑐ℎ 𝑐𝑜𝑢𝑛𝑡𝑒𝑟𝑝𝑎𝑟𝑡𝑦 𝑗
-Explanation for each term:
-• Creditworthiness 𝑤𝑗: infer the counterparty’s credit state in one year
-• Sensitivity of counterparty 𝛽𝑗: given in the Section 1.1
-• 𝜎𝑗=√1−𝛽𝑗2
-• Systemic risk credit drivers (𝑦𝑗): a correlated random which requires the inputs from credit_driver_corr.csv file. To generate this random variable, it followed the below steps:
-Step 1: Generate uncorrelated normal vectors A
-Step 2: Obtain the covariance matrix from reading the credit_driver_corr.csv: 𝜌
-Step 3: Decomposition 𝜌 into a matrix 𝐶𝐶𝑇=𝜌 using the Cholesky Decomposition
-Step 4: Convert the uncorrelated vector A to correlated random variable 𝑦=𝐴∗𝐶
-• specific risk idiosyncratic factor (𝑧𝑗): an uncorrelated random variable and follows the standard normal distribution (with mean is 0 and standard deviation 1). To generate this random variable, simply using np.random.randn in numpy library.
+The random variables to be generated in these case are the specific risk idiosyncratic factor and systemic risk credit drivers, which are consisted of the creditworthiness. 
+<img width="862" alt="image" src="https://user-images.githubusercontent.com/90881469/190925645-28c079b2-9f46-4988-b806-14903f8c1803.png">
+<img width="873" alt="image" src="https://user-images.githubusercontent.com/90881469/190925652-00449287-0518-4bb4-8c1b-33581550ab87.png">
+
+In additional to analyze the sample error, the other purpose was to analyze the model error. Namely, tried to assume that each three sampling methods for the counterparty losses follow the Normal Distribution, whose formula is the following:
+<img width="260" alt="image" src="https://user-images.githubusercontent.com/90881469/190925713-d45e6216-9f35-43bd-a413-d53842063b3b.png">
+
+Lastly, computing the VaR and CVaR at 99.9% and 99% Quantile Levels for two types of portfolio (one is One unit invested for each 100 bonds and the other is Equal amount of dollar for each 100 bonds)
+
+<img width="886" alt="image" src="https://user-images.githubusercontent.com/90881469/190925805-0db95ca8-e1b9-4d9b-bc4b-bb330ce1cd54.png">
+<img width="949" alt="image" src="https://user-images.githubusercontent.com/90881469/190925840-bccd9484-79c6-4dba-8586-bad71e4c2d52.png">
+<img width="946" alt="image" src="https://user-images.githubusercontent.com/90881469/190925852-a1f239eb-7ab5-47f7-b74a-e58015276fdb.png">
