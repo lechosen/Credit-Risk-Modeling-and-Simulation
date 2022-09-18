@@ -1,4 +1,4 @@
-# Credit-Risk-Modeling-and-Simulation
+# Credit Risk Modeling and Simulation
 
 The code was to model credit-risky portfolios 1-year loss of corporate bonds under three different scenarios
 – Monte Carlo Approximation 1 (5000 In-sample Scenarios, 1000 systemic scenarios and 5 idiosyncratic scenarios for each systemic, non-Normal distribution of losses); 
